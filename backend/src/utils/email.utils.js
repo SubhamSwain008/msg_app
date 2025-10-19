@@ -1,26 +1,36 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 dotenv.config();
 
-   
-export const sendEmail=async(to,subject,message)=>{
-    try{
-    const resend = new Resend(process.env.RE_SEND_API);
-   await resend.emails.send({
-  from: 'onboarding@resend.dev',
-  to: to,
-  subject: subject||'well come to our world class messaging app',
-  html: `<p>hello dear a msg for you : \n <strong>${message}</strong></p>`||'<p>start chatting with your friends and familes now .<strong>....</strong>!</p>'
-});
+export const sendEmail = async (to, subject, message) => {
+  try {
+    // Configure transporter with Gmail and app password
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER, // your Gmail address
+        pass: process.env.EMAIL_PASS, // your App Password
+      },
+    });
 
-console.log("email sent.");
-return "email sent sucessful";
-    }
-    catch(e)
-{   
-    console.log(e);
-    return "failed to sent email."
-}   
-}
+    // Compose the email
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to,
+      subject: subject || 'Welcome to our world-class messaging app',
+      html: `
+        <p>Hello dear, a message for you:</p>
+        <p><strong>${message || 'Start chatting with your friends and family now!'}</strong></p>
+      `,
+    };
 
+    // Send the email
+    await transporter.sendMail(mailOptions);
 
+    console.log('✅ Email sent.');
+    return 'email sent successful';
+  } catch (e) {
+    console.error('❌ Failed to send email:', e);
+    return 'failed to send email.';
+  }
+};

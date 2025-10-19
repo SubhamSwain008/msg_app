@@ -2,6 +2,8 @@ import User from "../models/User.js";
 import bcrypt from 'bcryptjs';
 import { generateToken } from "../utils/jwt.utils.js";
 import { sendEmail } from "../utils/email.utils.js";
+import { upload_on_cloud } from "../utils/clodinary.utils.js";
+import fs from 'fs';
 
 export const signup= async(req,res)=>{
     const {fullname,email,password}=req.body;
@@ -76,4 +78,30 @@ export const login=async(req,res)=>{
 export const logout=async(req,res)=>{
     res.cookie("jwt","",{maxAge:0});
     res.status(200).json({"message":"user logged out"});
+}
+
+export const updateProfile=async(req,res)=>{
+         try{
+            if(!req.file) return res.status(400).json({"message":"please upload the image"});
+
+            const localFilePath=req.file.path;
+            const cloudRes=await upload_on_cloud(localFilePath);
+
+            if(fs.existsSync(localFilePath)) fs.unlinkSync(localFilePath);
+            const userId=req.user._id;
+            const updated=await User.findByIdAndUpdate(userId,{profilePic:cloudRes.secure_url},
+                {new:true});
+
+            res.status(200).json({"message":updated, "cloud res":cloudRes});
+
+
+         }catch(e){
+            res.status(400).json({"message":"internal error in image upload"})
+         }
+   
+}
+
+export const authCheck=async(req,res)=>{
+
+    res.status(200).json({"message":"user authenticated"});
 }

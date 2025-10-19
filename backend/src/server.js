@@ -5,17 +5,19 @@ import authRoute from './routes/auth.routs.js';
 import msgRoute from './routes/messages.routs.js';
 import path from 'path';
 import { connectDB } from './db/db.js';
-
+import cookieParser from "cookie-parser";
+import { arcProtection } from './middleware/arcjet.miidelware.js';
 const app=express();
 
 //combining front and backend
 const __dirname=path.resolve();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use('/api/auth',authRoute);
 app.use('/api/msg',msgRoute);
 
-app.get('/api/home',(req,res)=>{
+app.get('/api/home',arcProtection,(req,res)=>{
     res.json({hello:"world"});
 });
 
