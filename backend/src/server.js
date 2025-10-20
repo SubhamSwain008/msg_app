@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
 import authRoute from './routes/auth.routs.js';
@@ -11,7 +12,11 @@ const app=express();
 
 //combining front and backend
 const __dirname=path.resolve();
-
+const corsOptions = {
+    origin: 'http://localhost:5173', // Allow only requests from this origin
+    credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api/auth',authRoute);
@@ -22,7 +27,7 @@ app.get('/api/home',arcProtection,(req,res)=>{
 });
 
 //combining frontend and backend
-if(process.env.NODE_ENV=="production"){
+if(process.env.NODE_ENV!="devlopemnt"){
 
     app.use(express.static(path.join(__dirname,"../frontend/dist")));
 

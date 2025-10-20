@@ -4,6 +4,7 @@ import {v2 as cloudinary} from 'cloudinary'
 
 export const getAllPeople=async(req ,res)=>{
     try{
+       
         const loggedInUserId=req.user._id;
         if(!loggedInUserId) return res.status(400).json({"message":"user not found "})
         const fillterUsers=await User.find({_id:{$ne:loggedInUserId}}).select("-password");
@@ -65,4 +66,25 @@ catch(e){
     return res.status(400).json({"message":"failed to send message",e})
 }
 
+}
+
+export const getChatPartners=async(req,res)=>{
+    try{
+        const loggedInUserId=req.user._id.toString();
+
+        const userMessages=await Message.find({
+            $or:[{senderId:loggedInUserId},{receverId:loggedInUserId}]
+        });
+        const chatPatnersIds=[...new Set(userMessages.map((msg)=>
+            msg.senderId.toString() ===loggedInUserId? msg.receverId.toString():msg.senderId.toString()
+        ))
+    ]   
+    // console.log(loggedInUserId,chatPatnersIds);
+    const chatPatners=await User.find({_id:{$in:chatPatnersIds}}).select("-password");
+    res.status(200).json({chatPatners});
+    }
+    catch(e){
+        console.log(e);
+        res.status(400).json({"message":"failed to get chats due ton internal errors",e});
+    }
 }
