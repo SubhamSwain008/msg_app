@@ -1,34 +1,38 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useAuthStore } from "./useAuthStore.js";
-
-axios.defaults.withCredentials = true; //  enables sending cookies by default
+import { useNavigate } from "react-router-dom";
+import { useChatStore } from "./useChatstore";
+axios.defaults.withCredentials = true;
 
 export default function ChatPage() {
-const [user,setUser]=useState([]);
-const {authUser,isLoggedin,login,setName}=useAuthStore();
-  useEffect(()=>{
-    const getUser=async () => {
-    try {
-      const res = await axios.get("http://localhost:4000/api/msg/all-people", {
-        withCredentials: true, // explicitly set credentials for this request
-      });
-      console.log(res.data);
-      setUser(res.data.map((v,idx)=>({_id:v._id,fullname:v.fullname})
-      
-      ));
-      
-      
-    } catch(e) {
-      console.error("Error fetching messages:", e.response?.data || e.message);
-    }
-  }
-  getUser();
-  
-},[]);
-useEffect(()=>{
-    console.log(user)
-},[user])
+  const{allContacts ,chats,messages,activeTab,selectedUser,isUserLoading,isMessageLoading,isSoundEnabled,getAllContacts,getAllChats}=useChatStore();
+  const nav = useNavigate();
+
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/auth/auth-check", {
+          withCredentials: true,
+        });
+        console.log("Auth check:", res.data);
+
+        if (!res.data.message) {
+          
+          nav("/login");
+        }else{
+          getAllContacts();
+          getAllChats();
+        }
+      } catch (e) {
+        console.error("Auth check failed:", e.response?.data );
+        nav("/login");
+      }
+    })();
+  }, [nav]);
+
+ 
+
 
   return (
     <div>

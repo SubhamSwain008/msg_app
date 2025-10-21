@@ -104,5 +104,5 @@ export const updateProfile=async(req,res)=>{
 
 export const authCheck=async(req,res)=>{
 
-    res.status(200).json({"message":"user authenticated"});
+    res.status(200).json({"message":true});
 }
