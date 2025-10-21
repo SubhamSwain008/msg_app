@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useAuthStore } from "./useAuthStore.js";
 
 axios.defaults.withCredentials = true; //  enables sending cookies by default
 
 export default function ChatPage() {
 const [user,setUser]=useState([]);
-
+const {authUser,isLoggedin,login,setName}=useAuthStore();
   useEffect(()=>{
     const getUser=async () => {
     try {
@@ -14,9 +15,11 @@ const [user,setUser]=useState([]);
       });
       console.log(res.data);
       setUser(res.data.map((v,idx)=>({_id:v._id,fullname:v.fullname})
+      
       ));
       
-    } catch (e) {
+      
+    } catch(e) {
       console.error("Error fetching messages:", e.response?.data || e.message);
     }
   }

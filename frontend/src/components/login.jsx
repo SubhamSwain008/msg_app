@@ -6,7 +6,7 @@ export default function Login(){
 const [email,setEmail]=useState("");
 const [password,setPassword]=useState("");
 const nav=useNavigate();
-const {authUser,isLoggedin,login}=useAuthStore();
+const {authUser,isLoggedin,login,setName}=useAuthStore();
 const Submit=async(e)=>{
     e.preventDefault();
    try{ const res=await axios.post("http://localhost:4000/api/auth/login",
@@ -15,6 +15,7 @@ const Submit=async(e)=>{
     setEmail("");
     setPassword("");
     console.log(res);
+    setName(res.data.fullname,res.data._id);
     login();
     nav('/Chat')
    }catch(e){
