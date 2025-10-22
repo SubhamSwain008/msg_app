@@ -15,9 +15,9 @@ const Submit=async(e)=>{
     setEmail("");
     setPassword("");
     console.log(res);
-    setName(res.data.fullname,res.data._id);
+    setName(res.data.fullname,res.data._id,res.data.profilePic);
     
-    nav('/')
+    nav('/');
    }catch(e){
     console.log(e);
    }

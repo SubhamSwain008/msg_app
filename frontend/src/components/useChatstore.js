@@ -29,7 +29,7 @@ set({isUserLoading:true});
 }catch(e){
    console.log(e);
 }finally{
-  set({isUserLoading:flase});
+  set({isUserLoading:false});
 }     
 },
 getAllChats:async()=>{
@@ -44,7 +44,7 @@ set({isUserLoading:true});
 }catch(e){
 console.log(e);
 }finally{
- set({isUserLoading:flase});
+ set({isUserLoading:false});
 }
    
 

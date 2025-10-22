@@ -77,6 +77,7 @@ export const login=async(req,res)=>{
 }
 
 export const logout=async(req,res)=>{
+    console.log("recived");
     res.cookie("jwt","",{maxAge:0});
     res.status(200).json({"message":"user logged out"});
 }
@@ -103,6 +104,7 @@ export const updateProfile=async(req,res)=>{
 }
 
 export const authCheck=async(req,res)=>{
-
-    res.status(200).json({"message":true});
+    
+     console.log(req.user.profilePic);
+    res.status(200).json({"message":true,fullname:req.user.fullname,_id:req.user._id,profilePic:req.user.profilePic});
 }
