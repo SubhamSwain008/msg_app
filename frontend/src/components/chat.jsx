@@ -48,13 +48,13 @@ export default function ChatPage() {
 
 
   return (
-    <div>
+    <div style={{maxHeight:"100vh", overflowY:"auto"}}>
       {isauthloading?<div>loading...</div>:<div><MyPorfile/></div>}
       <button onClick={()=>{Logout();
       nav('/login');
 
       }}>logout</button>
-      {isUserLoading?<div>loading..</div>:<div><ChattingUsers/></div>} 
+      {isUserLoading?<div>loading..</div>:<div ><ChattingUsers/></div>} 
     </div>
   );
 }
