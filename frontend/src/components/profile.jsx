@@ -49,12 +49,17 @@ export default function MyProfile() {
       <h1>{authUser?.name}</h1>
 
       {profileUpadting?<div>Profile updating</div>:
-      <img
-        src={authUser?.profilePic || defalutpic}
-        alt="profile"
-        onClick={() => imgInputRef.current.click()}
-        style={{ cursor: "pointer", width: "100px", borderRadius: "50%" }}
-      />}
+     <img
+  src={authUser.profilePic || defalutpic}
+  alt="profile"
+  onClick={() => imgInputRef.current.click()}
+  onError={(e) => {
+    e.target.onerror = null; // prevent infinite loop
+    e.target.src = defalutpic; // set fallback image
+  }}
+  style={{ cursor: "pointer", width: "100px", borderRadius: "50%" }}
+/>
+}
       <input
         type="file"
         ref={imgInputRef}

@@ -1,11 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useChatStore } from "./useChatstore";
+import { useChatStore } from "./useChatstore.js";
 import Logout from "./logout.js";
 import MyPorfile from "./profile.jsx";
 import { useAuthStore } from "./useAuthStore.js";
-axios.defaults.withCredentials = true;
+import ChattingUsers from "./chatting.jsx";
+
+
+
+
 
 export default function ChatPage() {
   const{allContacts ,chats,messages,activeTab,selectedUser,isUserLoading,isMessageLoading,isSoundEnabled,getAllContacts,getAllChats}=useChatStore();
@@ -28,7 +32,7 @@ export default function ChatPage() {
         }else{
           getAllContacts();
           getAllChats();
-          setName(res.data.fullname,res.data._id,res.data.profilePic);
+          setName(res.data.fullname,res.data._id,res.data.profilePic|| "");
           
         }
       } catch (e) {
@@ -50,6 +54,7 @@ export default function ChatPage() {
       nav('/login');
 
       }}>logout</button>
+      {isUserLoading?<div>loading..</div>:<div><ChattingUsers/></div>} 
     </div>
   );
 }

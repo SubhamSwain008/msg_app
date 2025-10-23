@@ -37,6 +37,7 @@ const Submit=async(e)=>{
             />
             <button type="submit">login</button>
         </form>
+        <button onClick={()=>nav('/signup')}>signup</button>
        </div>
     </>);
 }
