@@ -8,12 +8,12 @@ import path from 'path';
 import { connectDB } from './db/db.js';
 import cookieParser from "cookie-parser";
 import { arcProtection } from './middleware/arcjet.miidelware.js';
-const app=express();
+import {app,httpServer} from "./utils/socket.io.utils.js";
 
 //combining front and backend
 const __dirname=path.resolve();
 const corsOptions = {
-    origin: 'http://localhost:5173', // Allow only requests from this origin
+    origin: process.env.CORS, // Allow only requests from this origin
     credentials: true,
 };
 app.use(cors(corsOptions));
@@ -37,9 +37,9 @@ if(process.env.NODE_ENV!="devlopemnt"){
     });
 }
 
-app.listen(process.env.PORT || 3000,()=>{
+httpServer.listen(process.env.PORT ,()=>{
 
-    console.log(`app listening on port:http://localhost:${process.env.PORT || 3000}`);
+    console.log(`app listening on port:http://localhost:${process.env.PORT}`);
     const connect=connectDB();
     console.log(connect);
 });

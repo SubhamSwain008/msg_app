@@ -20,7 +20,7 @@ export default function ChatPage() {
     getAllContacts,
     getAllChats,
   } = useChatStore();
-  const { authUser, setName } = useAuthStore();
+  const { authUser, setName ,disconnectScoket} = useAuthStore();
   const [isauthloading, setAuthloading] = useState(true);
   const nav = useNavigate();
 
@@ -59,6 +59,7 @@ export default function ChatPage() {
         <button
           onClick={() => {
             Logout();
+            disconnectScoket();
             nav("/login");
           }}
           className="bg-red-500 px-3 py-1 rounded hover:bg-red-600"

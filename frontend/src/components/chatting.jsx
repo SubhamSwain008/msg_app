@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useChatStore } from "./useChatstore.js";
 import ChatBox from "./chatbox.jsx";
 import defalutpic from "../assets/react.svg";
-
+import { useAuthStore } from "./useAuthStore.js";
 export default function ChattingUsers() {
   const {
     allContacts,
@@ -15,7 +15,7 @@ export default function ChattingUsers() {
     isMessageLoading,
     setActiveTab,
   } = useChatStore();
-
+const {onlineUser}=useAuthStore();
   useEffect(() => {
     console.log("users:", allContacts, "chats:", chats);
   }, [allContacts, chats]);

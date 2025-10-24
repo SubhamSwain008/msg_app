@@ -6,7 +6,7 @@ export default function Login(){
 const [email,setEmail]=useState("");
 const [password,setPassword]=useState("");
 const nav=useNavigate();
-const {authUser,setName}=useAuthStore();
+const {authUser,setName,connectScoket}=useAuthStore();
 const Submit=async(e)=>{
     e.preventDefault();
    try{ const res=await axios.post("http://localhost:4000/api/auth/login",
@@ -16,10 +16,11 @@ const Submit=async(e)=>{
     setPassword("");
     console.log(res);
     setName(res.data.fullname,res.data._id,res.data.profilePic);
-    
+    connectScoket();
     nav('/');
    }catch(e){
     console.log(e);
+    alert("failed to login")
    }
 }
 
