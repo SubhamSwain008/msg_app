@@ -59,13 +59,13 @@ export const login=async(req,res)=>{
     try{
       const {email,password}=req.body;
        const user=await User.findOne({email});
-       if(!user) res.status(400).json({"message":"invalid credentials"});
+       if(!user) return res.status(400).json({"message":"invalid credentials"});
        const isPasswordCorrect= await bcrypt.compare(password,user.password);
-       if(!isPasswordCorrect) res.status(400).json({"message":"invalid credentails"});
+       if(!isPasswordCorrect) return res.status(400).json({"message":"invalid credentails"});
 
        generateToken(user._id,res);
 
-       res.status(200).json({
+       return res.status(200).json({
         _id:user._id,
         fullname:user.fullname,
         email:user.email,
@@ -75,7 +75,7 @@ export const login=async(req,res)=>{
 
 
     }catch(e){
-            res.status(400).json({"message":"login failed due to internal error. ",e})
+          return  res.status(400).json({"message":"login failed due to internal error. ",e})
     }
 }
 

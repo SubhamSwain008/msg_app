@@ -10,6 +10,7 @@ activeTab:"chats",
 selectedUser:null,
 isUserLoading:false,
 isMessageLoading:false,
+isMessageGoingOn:false,
 isSoundEnabled:localStorage.getItem("isSound")===true,
 toggleSound:()=>{
     localStorage.setItem("isSound",!get().isSoundEnabled)
@@ -67,14 +68,27 @@ getMessages:async(id)=>{
     }finally{
         set({isMessageLoading:false});
     }
-},sendMessages:async(id,text)=>{
-    try{
-      const res=await axios.post(`http://localhost:4000/api/msg/send/${id}`,{text:text},{withCredentials:true});
-      console.log("message sent:",res.data);
-      //update messages
-      get().getMessages(id);
-    }catch(e){
-      console.log(e);
-    }},
+},sendMessages: async (id, text="", image = null) => {
+  set({ isMessageGoingOn: true });
+  try {
+    const payload = { text };
+    if (image) payload.image = image; // attach base64 image if available
 
+    const res = await axios.post(
+      `http://localhost:4000/api/msg/send/${id}`,
+      payload,
+      { withCredentials: true }
+    );
+    console.log("message sent:", res.data);
+
+    // update messages after sending
+    get().getMessages(id);
+  } catch (e) {
+    console.log(e);
+  } finally {
+    set({ isMessageGoingOn: false });
+  }
+},
+
+    
 }));

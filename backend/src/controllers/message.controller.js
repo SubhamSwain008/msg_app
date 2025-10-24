@@ -67,7 +67,25 @@ catch(e){
 }
 
 }
+// export const sendImages=async(req,res)=>{
+//     try{
+//             if(!req.file) return res.status(400).json({"message":"please send the image"});
 
+//             const localFilePath=req.file.path;
+//             const cloudRes=await upload_on_cloud(localFilePath);
+
+//             if(fs.existsSync(localFilePath)) fs.unlinkSync(localFilePath);
+//             const userId=req.user._id;
+//             const updated=await User.findByIdAndUpdate(userId,{profilePic:cloudRes.secure_url},
+//                 {new:true});
+
+//             res.status(200).json({"message":updated, "cloud res":cloudRes});
+
+
+//          }catch(e){
+//             res.status(400).json({"message":"internal error in image upload"})
+//          }
+// }
 export const getChatPartners=async(req,res)=>{
     try{
         const loggedInUserId=req.user._id.toString();
