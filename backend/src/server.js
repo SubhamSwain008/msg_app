@@ -11,10 +11,10 @@ import { arcProtection } from './middleware/arcjet.miidelware.js';
 import {app,httpServer} from "./utils/socket.io.utils.js";
 
 //combining front and backend
-const __dirname=path.resolve();
+
 const corsOptions = {
-    origin: process.env.CORS, // Allow only requests from this origin
-    credentials: true,
+  origin: "https://msg-app-frontend-ten.vercel.app", // Only allow requests from this frontend
+  credentials: true, // needed for cookies / withCredentials
 };
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "10mb" }));
