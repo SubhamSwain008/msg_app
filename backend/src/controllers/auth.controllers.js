@@ -53,31 +53,37 @@ export const signup = async (req, res) => {
 };
 
 
-export const login=async(req,res)=>{
-    
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-    try{
-      const {email,password}=req.body;
-       const user=await User.findOne({email});
-       if(!user) return res.status(400).json({"message":"invalid credentials"});
-       const isPasswordCorrect= await bcrypt.compare(password,user.password);
-       if(!isPasswordCorrect) return res.status(400).json({"message":"invalid credentails"});
-
-       generateToken(user._id,res);
-
-       return res.status(200).json({
-        _id:user._id,
-        fullname:user.fullname,
-        email:user.email,
-        profilePic:user.profilePic,
-       });
-
-
-
-    }catch(e){
-          return  res.status(400).json({"message":"login failed due to internal error. ",e})
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
     }
-}
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "Invalid credentials" });
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
+
+    generateToken(user._id, res);
+
+    return res.status(200).json({
+      _id: user._id,
+      fullname: user.fullname,
+      email: user.email,
+      profilePic: user.profilePic,
+    });
+  } catch (err) {
+    console.error("Login error:", err);
+    return res.status(500).json({
+      message: "Login failed due to internal error",
+      error: err.message || err.toString(),
+    });
+  }
+};
+
 
 export const logout=async(req,res)=>{
     console.log("recived");
