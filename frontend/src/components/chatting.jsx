@@ -1,8 +1,8 @@
-import { useEffect } from "react";
 import { useChatStore } from "./useChatstore.js";
 import ChatBox from "./chatbox.jsx";
 import defalutpic from "../assets/react.svg";
 import { useAuthStore } from "./useAuthStore.js";
+
 export default function ChattingUsers() {
   const {
     allContacts,
@@ -12,11 +12,10 @@ export default function ChattingUsers() {
     selectedUser,
     setSelectUser,
     getMessages,
-    isMessageLoading,
     setActiveTab,
   } = useChatStore();
-const {onlineUser}=useAuthStore();
 
+  const { onlineUser } = useAuthStore();
 
   const handleUserClick = async (userId) => {
     setSelectUser(userId);
@@ -24,11 +23,11 @@ const {onlineUser}=useAuthStore();
   };
 
   return (
-    <div className="flex h-full overflow-hidden">
+    <div className="flex h-full overflow-hidden bg-gradient-to-b from-blue-700 to-blue-600">
       {/* Sidebar */}
-      <div className="w-1/3 bg-blue-600 text-white p-3 overflow-y-auto flex flex-col">
+      <div className="w-1/3 text-white p-4 overflow-y-auto flex flex-col backdrop-blur-md bg-blue-600/90 rounded-r-xl shadow-lg">
         <h1
-          className="text-xl font-bold mb-3 cursor-pointer hover:text-yellow-300"
+          className="text-xl font-bold mb-4 cursor-pointer hover:text-yellow-300 transition-colors"
           onClick={() =>
             setActiveTab(activeTab === "chats" ? "People" : "chats")
           }
@@ -36,54 +35,44 @@ const {onlineUser}=useAuthStore();
           {activeTab === "chats" ? "Chats" : "People"}
         </h1>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
           {(activeTab === "chats" ? chats : allContacts).map((val) => (
             <div
               key={val._id}
-              className={`flex items-center gap-3 p-2 rounded cursor-pointer hover:bg-blue-500 transition-colors ${
-                selectedUser === val._id ? "bg-blue-800" : "bg-blue-700"
+              className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-all duration-300 hover:bg-blue-500 shadow-md ${
+                selectedUser === val._id ? "bg-blue-800 shadow-xl" : "bg-blue-700"
               }`}
               onClick={() => handleUserClick(val._id)}
             >
+              {/* Profile picture */}
               <div
-            style={{
-              
-              borderRadius: "50%", // makes it circular, adjust as needed
-              // optional base border
-              boxShadow: onlineUser.includes(String(val._id))
-                ? "0 0 0px 3px #00ff50 " // green glow if online
-                : "0 0 0px 3px #A9A9A9", // no glow if offline
-              transition: "box-shadow 0.3s ease-in-out", // smooth glow transition
-            }}
-          >
-          
-
+                className={`relative flex-shrink-0 rounded-full border-2  cursor-pointer transition-all duration-300 
+                ${onlineUser.includes(String(val._id)) ? "ring-5 ring-green-400" : "ring-1 ring-gray-400"}
+                hover:ml-12 hover:scale-300 hover:shadow-2xl hover:z-10`}
+              >
                 <img
-                src={val.profilePic || defalutpic}
-                alt=""
-                className="w-10 h-10 rounded-full object-cover border-2 border-white"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = defalutpic;
-                }}
-              />
+                  src={val.profilePic || defalutpic}
+                  alt=""
+                  className="w-12 h-12 rounded-full object-cover"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = defalutpic;
+                  }}
+                />
               </div>
-              
 
               <span className="font-medium truncate">{val.fullname}</span>
-             
             </div>
           ))}
         </div>
       </div>
 
       {/* Chat Box */}
-      <div className="flex-1 bg-gray-900 text-white p-4 overflow-y-auto flex flex-col">
+      <div className="flex-1 bg-gray-900 text-white p-5 overflow-y-auto flex flex-col rounded-l-xl shadow-inner">
         {selectedUser ? (
-            <ChatBox chatarray={messages} />
-          
+          <ChatBox chatarray={messages} />
         ) : (
-          <div className="text-gray-400 text-center mt-10">
+          <div className="text-gray-400 text-center mt-20 text-lg animate-pulse">
             Select a user to start chatting
           </div>
         )}

@@ -113,7 +113,7 @@ useEffect(() => {
           onClick={() => {
             if (inputText.trim() !== "" || selectedImage) {
               sendMessages(selectedUser, inputText || "", selectedImage || null);
-              
+              setSelectedImage(null);
               setInputText("");
             }
           }}
@@ -124,9 +124,9 @@ useEffect(() => {
         </button>:
         <button
           disabled
-          className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl text-white font-semibold"
+          className="bg-red-500 px-4 py-2 rounded-xl text-white font-semibold"
         >
-          Send
+          Sending
         </button>
         }
       </div>
