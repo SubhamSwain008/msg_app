@@ -36,7 +36,7 @@ export const signup = async (req, res) => {
     if (newUser) {
       generateToken(newUser._id, res);
       await newUser.save();
-      const eRes = await sendEmail(newUser.email, "first welcome", "use our 3rd class messaging app smoothly.");
+      const eRes = await sendEmail(newUser.email, "first welcome", "use our 3rd class messaging app .");
 
       return res.status(201).json({
         fullname: newUser.fullname,
