@@ -27,15 +27,7 @@ app.get('/api/home',(req,res)=>{
     res.json({hello:"world"});
 });
 
-//combining frontend and backend
-if(process.env.NODE_ENV!="devlopemnt"){
 
-    app.use(express.static(path.join(__dirname,"../frontend/dist")));
-
-    app.get("*",(req,res)=>{
-        res.sendFile(path.join(__dirname,"../frontend/dist/index.html"))
-    });
-}
 
 httpServer.listen(process.env.PORT ,()=>{
 
