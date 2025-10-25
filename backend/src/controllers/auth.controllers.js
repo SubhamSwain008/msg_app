@@ -36,22 +36,35 @@ export const signup = async (req, res) => {
     if (newUser) {
       generateToken(newUser._id, res);
       await newUser.save();
-     try{ const eRes = await sendEmail(newUser.email, "first welcome", "use our 3rd class messaging app .");
-      return res.status(201).json({
-        fullname: newUser.fullname,
-        email: newUser.email,
-        eRes,
-      });
-     }
-     catch(e){
-          return res.status(201).json({
-        fullname: newUser.fullname,
-        email: newUser.email,
-        
-      });
-     }
 
-      
+      // Wrap email sending with 3-second timeout
+      const sendEmailWithTimeout = (to, subject, message, timeout = 3000) => {
+        return Promise.race([
+          sendEmail(to, subject, message),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Email send timeout")), timeout)
+          ),
+        ]);
+      };
+
+      try {
+        const eRes = await sendEmailWithTimeout(
+          newUser.email,
+          "first welcome",
+          "use our 3rd class messaging app ."
+        );
+        return res.status(201).json({
+          fullname: newUser.fullname,
+          email: newUser.email,
+          eRes,
+        });
+      } catch (e) {
+        console.error("Email sending failed or timed out:", e);
+        return res.status(201).json({
+          fullname: newUser.fullname,
+          email: newUser.email,
+        });
+      }
     } else {
       return res.status(400).json({ message: "invalid user data" });
     }
@@ -60,6 +73,7 @@ export const signup = async (req, res) => {
     return res.status(500).json({ message: "error in signup controller" });
   }
 };
+
 
 
 export const login = async (req, res) => {
