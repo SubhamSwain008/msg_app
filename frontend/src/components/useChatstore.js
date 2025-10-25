@@ -22,7 +22,7 @@ export const useChatStore = create((set, get) => ({
   getAllContacts: async () => {
     set({ isUserLoading: true });
     try {
-      const resUsers = await axios.get("https://msg-app-one.vercel.app/api/msg/all-people", {
+      const resUsers = await axios.get("https://msg-app-gd7w.onrender.com/api/msg/all-people", {
         withCredentials: true,
       });
       set({ allContacts: resUsers.data });
@@ -37,7 +37,7 @@ export const useChatStore = create((set, get) => ({
   getAllChats: async () => {
     set({ isUserLoading: true });
     try {
-      const resUsers = await axios.get("https://msg-app-one.vercel.app/api/msg/chats", {
+      const resUsers = await axios.get("https://msg-app-gd7w.onrender.com/api/msg/chats", {
         withCredentials: true,
       });
       set({ chats: resUsers.data.chatPatners });
@@ -60,7 +60,7 @@ export const useChatStore = create((set, get) => ({
   getMessages: async (id) => {
     set({ isMessageLoading: true });
     try {
-      const resMes = await axios.get(`https://msg-app-one.vercel.app/api/msg/${id}`, { withCredentials: true });
+      const resMes = await axios.get(`https://msg-app-gd7w.onrender.com/api/msg/${id}`, { withCredentials: true });
 
       set({ messages: resMes.data });
       console.log("messages: ", get().messages);
@@ -76,7 +76,7 @@ export const useChatStore = create((set, get) => ({
       if (image) payload.image = image; // attach base64 image if available
 
       const res = await axios.post(
-        `https://msg-app-one.vercel.app/api/msg/send/${id}`,
+        `https://msg-app-gd7w.onrender.com/api/msg/send/${id}`,
         payload,
         { withCredentials: true }
       );

@@ -18,7 +18,7 @@ export default function Login() {
 
       try {
          const res = await axios.post(
-            "https://msg-app-one.vercel.app/api/auth/login",
+            "https://msg-app-gd7w.onrender.com/api/auth/login",
             { email, password },
             { withCredentials: true }
          );
