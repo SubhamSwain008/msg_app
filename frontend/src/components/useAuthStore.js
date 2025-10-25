@@ -21,7 +21,7 @@ export const useAuthStore = create((set, get) => ({
         const { authUser } = get();
         if (!authUser || get().scoket?.connected) return;
 
-        const scoket = io("https://msg-app-frontend-ten.vercel.app", {
+        const scoket = io("https://msg-app-one.vercel.app", {
             transports: ["websocket"],
             withCredentials: true
         });
