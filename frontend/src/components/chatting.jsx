@@ -29,7 +29,7 @@ export default function ChattingUsers() {
     if (messages.length > 0) {
       getAllChats();
     }
-  }, [messages, getAllChats]);
+  }, [getAllChats]);
 
   return (
     <div className="flex h-full overflow-hidden bg-gradient-to-b from-blue-700 to-blue-600">
