@@ -14,7 +14,6 @@ export default function ChattingUsers() {
     setSelectUser,
     getMessages,
     setActiveTab,
-    getAllChats, // 🆕 added to update chats
   } = useChatStore();
 
   const { onlineUser } = useAuthStore();
@@ -24,12 +23,6 @@ export default function ChattingUsers() {
     await getMessages(userId);
   };
 
-  // 🆕 Whenever messages change, refresh chat list
-  useEffect(() => {
-    if (messages.length > 0) {
-      getAllChats();
-    }
-  }, [getAllChats]);
 
   return (
     <div className="flex h-full overflow-hidden bg-gradient-to-b from-blue-700 to-blue-600">
@@ -81,8 +74,8 @@ export default function ChattingUsers() {
         {selectedUser ? (
           <ChatBox chatarray={messages} />
         ) : (
-          <div className="text-amber-400 text-center mt-20 animate-pulse text-4xl">
-            Click on Chats to discover more people
+          <div className="text-amber-400 text-center mt-20  animate-pulse text-4xl  ">
+            Click on Chats to discover more people 
           </div>
         )}
       </div>

@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import axios from "axios";
 import { useAuthStore } from "./useAuthStore.js";
-import { io } from "socket.io-client";
-
+import { io } from "socket.io-client"
 export const useChatStore = create((set, get) => ({
+
   allContacts: [],
   chats: [],
   messages: [],
@@ -13,15 +13,12 @@ export const useChatStore = create((set, get) => ({
   isMessageLoading: false,
   isMessageGoingOn: false,
   isSoundEnabled: localStorage.getItem("isSound") === true,
-
   toggleSound: () => {
-    localStorage.setItem("isSound", !get().isSoundEnabled);
-    set({ isSoundEnabled: !get().isSoundEnabled });
-  },
-
-  setActiveTab: (tab) => set({ activeTab: tab }),
+    localStorage.setItem("isSound", !get().isSoundEnabled)
+    set({ isSoundEnabled: !get().isSoundEnabled })
+  }
+  , setActiveTab: (tab) => set({ activeTab: tab }),
   setSelectUser: (selectedUser) => set({ selectedUser }),
-
   getAllContacts: async () => {
     set({ isUserLoading: true });
     try {
@@ -29,11 +26,14 @@ export const useChatStore = create((set, get) => ({
         withCredentials: true,
       });
       set({ allContacts: resUsers.data });
+
+
     } catch (e) {
       console.log(e);
+    } finally {
+
     }
   },
-
   getAllChats: async () => {
     set({ isUserLoading: true });
     try {
@@ -41,41 +41,39 @@ export const useChatStore = create((set, get) => ({
         withCredentials: true,
       });
       set({ chats: resUsers.data.chatPatners });
+
+
     } catch (e) {
       console.log(e);
     } finally {
       set({ isUserLoading: false });
     }
-  },
 
+
+  },
   setSelectUser: (id) => {
     set({ selectedUser: id });
   },
 
+
+
   getMessages: async (id) => {
     set({ isMessageLoading: true });
     try {
-      const resMes = await axios.get(`https://msg-app-gd7w.onrender.com/api/msg/${id}`, {
-        withCredentials: true,
-      });
+      const resMes = await axios.get(`https://msg-app-gd7w.onrender.com/api/msg/${id}`, { withCredentials: true });
 
       set({ messages: resMes.data });
       console.log("messages: ", get().messages);
-
-      // 🆕 refresh chat list whenever messages update
-      get().getAllChats();
     } catch (e) {
       console.log(e);
     } finally {
       set({ isMessageLoading: false });
     }
-  },
-
-  sendMessages: async (id, text = "", image = null) => {
+  }, sendMessages: async (id, text = "", image = null) => {
     set({ isMessageGoingOn: true });
     try {
       const payload = { text };
-      if (image) payload.image = image;
+      if (image) payload.image = image; // attach base64 image if available
 
       const res = await axios.post(
         `https://msg-app-gd7w.onrender.com/api/msg/send/${id}`,
@@ -84,16 +82,14 @@ export const useChatStore = create((set, get) => ({
       );
       console.log("message sent:", res.data);
 
-      // update messages and chat list after sending
-      await get().getMessages(id);
-      await get().getAllChats(); // 🆕 added here too
+      // update messages after sending
+      get().getMessages(id);
     } catch (e) {
       console.log(e);
     } finally {
       set({ isMessageGoingOn: false });
     }
   },
-
   listenToIncomingMessage: () => {
     const { selectedUser } = get();
     if (!selectedUser) return;
@@ -102,14 +98,12 @@ export const useChatStore = create((set, get) => ({
     socket.on("newMessage", (newMessage) => {
       const currentMessages = get().messages;
       set({ messages: [...currentMessages, newMessage] });
-
-      // 🆕 also update chats when a new message arrives
-      get().getAllChats();
-    });
+    })
   },
-
   stopListiningToMessage: () => {
     const socket = useAuthStore.getState().scoket;
+
     socket.off("newMessage");
-  },
+  }
+
 }));
