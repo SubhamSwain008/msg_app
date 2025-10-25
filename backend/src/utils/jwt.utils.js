@@ -6,11 +6,13 @@ export const generateToken=(userId,res)=>{
         expiresIn:"1d",
     });
 
-    res.cookie("jwt",token,{
-        maxAge:1*24*60*60*1000,
-        httpOnly:true,//prevents xss attacks
-       
-    });
+    res.cookie("jwt", token, {
+    maxAge: 24*60*60*1000, // 1 day
+    httpOnly: true,
+    secure: true, // required for cross-site over HTTPS
+    sameSite: "none", // allow cross-site
+});
+
 
     return token;
 }
