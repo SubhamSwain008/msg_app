@@ -72,7 +72,7 @@ export default function ChattingUsers() {
         {selectedUser ? (
           <ChatBox chatarray={messages} />
         ) : (
-          <div className="text-amber-400 text-center mt-20  animate-pulse text-9xl  ">
+          <div className="text-amber-400 text-center mt-20  animate-pulse text-4xl  ">
             Click on Chats to discover more people or Select a user to start chatting
           </div>
         )}
