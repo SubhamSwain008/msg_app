@@ -15,7 +15,7 @@ export default function Signup() {
     setCreating(true);
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/auth/signup",
+        "https://msg-app-one.vercel.app/api/auth/signup",
         { fullname, email, password },
         { withCredentials: true }
       );

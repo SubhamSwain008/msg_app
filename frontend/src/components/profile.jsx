@@ -23,7 +23,7 @@ export default function MyProfile() {
 
     try {
       const res = await axios.put(
-        "http://localhost:4000/api/auth/update-profile",
+        "https://msg-app-one.vercel.app/api/auth/update-profile",
         formData,
         {
           withCredentials: true,

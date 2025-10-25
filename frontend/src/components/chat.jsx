@@ -17,7 +17,7 @@ export default function ChatPage() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/auth/auth-check", {
+        const res = await axios.get("https://msg-app-one.vercel.app/api/auth/auth-check", {
           withCredentials: true,
         });
 

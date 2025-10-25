@@ -18,7 +18,7 @@ export default function Login() {
 
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/auth/login",
+        "https://msg-app-one.vercel.app/api/auth/login",
         { email, password },
         { withCredentials: true }
       );

@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function Logout() {
   try {
     const res = await axios.post(
-      "http://localhost:4000/api/auth/logout",
+      "https://msg-app-one.vercel.app/api/auth/logout",
       {}, // empty body
       { withCredentials: true } // config goes here
     );
