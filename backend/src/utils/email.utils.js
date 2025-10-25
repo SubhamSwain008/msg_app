@@ -4,33 +4,36 @@ dotenv.config();
 
 export const sendEmail = async (to, subject, message) => {
   try {
-    // Configure transporter with Gmail and app password
+    // Transporter configuration
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.EMAIL_USER, // your Gmail address
-        pass: process.env.EMAIL_PASS, // your App Password
+        user: process.env.EMAIL_USER,  // your Gmail
+        pass: process.env.EMAIL_PASS,  // App Password, no spaces
       },
+      secure: true,  // use TLS
+      logger: true,  // logs info for debugging
+      debug: true,   // shows communication with Gmail server
     });
 
-    // Compose the email
+    // Compose email
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"Chat App" <${process.env.EMAIL_USER}>`,
       to,
-      subject: subject || 'Welcome to our world-class messaging app',
+      subject: subject || 'Welcome to Chat App!',
       html: `
-        <p>Hello dear, a message for you:</p>
-        <p><strong>${message || 'Start chatting with your friends and family now!'}</strong></p>
+        <p>Hello,</p>
+        <p><strong>${message || 'Start chatting with your friends now!'}</strong></p>
       `,
     };
 
-    // Send the email
-    await transporter.sendMail(mailOptions);
+    // Send email
+    const info = await transporter.sendMail(mailOptions);
+    console.log('✅ Email sent:', info.messageId);
+    return 'Email sent successfully';
 
-    console.log('✅ Email sent.');
-    return 'email sent successful';
-  } catch (e) {
-    console.error('❌ Failed to send email:', e);
-    return 'failed to send email.';
+  } catch (err) {
+    console.error('❌ Failed to send email:', err.response || err);
+    return `Failed to send email: ${err.message}`;
   }
 };
