@@ -18,7 +18,7 @@ export const sendEmail = async (to, subject, message) => {
 
     // Compose email
     const mailOptions = {
-      from: `"Chat App" <${process.env.EMAIL_USER}>`,
+      from:process.env.EMAIL_USER,
       to,
       subject: subject || 'Welcome to Chat App!',
       html: `

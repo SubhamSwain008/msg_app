@@ -19,7 +19,7 @@ export default function Signup() {
                 { fullname, email, password },
                 { withCredentials: true }
             );
-            if (res.statusText) {
+            if (res) {
                 nav("/");
                 setCreating(false);
             }
