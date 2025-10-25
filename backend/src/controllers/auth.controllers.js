@@ -114,5 +114,5 @@ export const updateProfile=async(req,res)=>{
 
 export const authCheck=async(req,res)=>{
     
-    res.status(200).json({"message":true,fullname:req.user.fullname,_id:req.user._id,profilePic:req.user.profilePic});
+   return res.status(200).json({"message":true,fullname:req.user.fullname,_id:req.user._id,profilePic:req.user.profilePic});
 }
