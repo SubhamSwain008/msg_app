@@ -13,7 +13,7 @@ import {app,httpServer} from "./utils/socket.io.utils.js";
 //combining front and backend
 
 const corsOptions = {
-  origin: "https://msg-app-frontend-ten.vercel.app", // Only allow requests from this frontend
+  origin: ["https://msg-app-frontend-ten.vercel.app","https://msg-app-1-igr4.onrender.com"], // Only allow requests from this frontend
   credentials: true, // needed for cookies / withCredentials
 };
 app.use(cors(corsOptions));
