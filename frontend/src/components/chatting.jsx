@@ -2,6 +2,7 @@ import { useChatStore } from "./useChatstore.js";
 import ChatBox from "./chatbox.jsx";
 import defalutpic from "../assets/react.svg";
 import { useAuthStore } from "./useAuthStore.js";
+import { useEffect } from "react";
 
 export default function ChattingUsers() {
   const {
@@ -21,6 +22,9 @@ export default function ChattingUsers() {
     setSelectUser(userId);
     await getMessages(userId);
   };
+  useEffect(()=>{
+
+  },[messages])
 
   return (
     <div className="flex h-full overflow-hidden bg-gradient-to-b from-blue-700 to-blue-600">
@@ -73,7 +77,7 @@ export default function ChattingUsers() {
           <ChatBox chatarray={messages} />
         ) : (
           <div className="text-amber-400 text-center mt-20  animate-pulse text-4xl  ">
-            Click on Chats to discover more people or Select a user to start chatting
+            Click on Chats to discover more people 
           </div>
         )}
       </div>
