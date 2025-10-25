@@ -32,7 +32,7 @@ export default function ChattingUsers() {
             setActiveTab(activeTab === "chats" ? "People" : "chats")
           }
         >
-          {activeTab === "chats" ? "Chats" : "People"}
+          {activeTab === "chats" ? "Chats (click to discover more people)" : "People"}
         </h1>
 
         <div className="flex flex-col gap-3">
@@ -72,7 +72,7 @@ export default function ChattingUsers() {
         {selectedUser ? (
           <ChatBox chatarray={messages} />
         ) : (
-          <div className="text-gray-400 text-center mt-20 text-lg animate-pulse text-8xl ">
+          <div className="text-amber-400 text-center mt-20  animate-pulse text-9xl  ">
             Click on Chats to discover more people or Select a user to start chatting
           </div>
         )}
