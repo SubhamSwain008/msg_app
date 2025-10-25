@@ -20,7 +20,7 @@ export default function ChatPage() {
     getAllContacts,
     getAllChats,
   } = useChatStore();
-  const { authUser, setName ,disconnectScoket} = useAuthStore();
+  const { authUser, setName ,disconnectScoket,connectScoket} = useAuthStore();
   const [isauthloading, setAuthloading] = useState(true);
   const nav = useNavigate();
 
@@ -31,11 +31,13 @@ export default function ChatPage() {
         const res = await axios.get("http://localhost:4000/api/auth/auth-check", {
           withCredentials: true,
         });
+        connectScoket();
         if (!res.data.message) {
           nav("/login");
         } else {
           getAllContacts();
           getAllChats();
+
           setName(res.data.fullname, res.data._id, res.data.profilePic || "");
         }
       } catch (e) {

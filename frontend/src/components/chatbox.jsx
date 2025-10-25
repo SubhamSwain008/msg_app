@@ -2,14 +2,18 @@ import { useChatStore } from "./useChatstore";
 import { useState, useRef, useEffect } from "react";
 
 export default function ChatBox({ chatarray }) {
-  const { sendMessages, selectedUser ,isMessageGoingOn} = useChatStore();
+  const { sendMessages, selectedUser ,isMessageGoingOn,listenToIncomingMessage,stopListiningToMessage} = useChatStore();
   const [inputText, setInputText] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
   const bottomRef = useRef(null);
 useEffect(() => {
+  listenToIncomingMessage();
   bottomRef.current?.scrollIntoView();
-}, [chatarray]|| []);
+  
+  return()=> stopListiningToMessage();
+
+}, );
 
   // convert image to base64
   const handleImage= (e) => {
@@ -75,6 +79,15 @@ useEffect(() => {
           onChange={(e) => setInputText(e.target.value)}
           className="flex-1 bg-gray-900 text-white rounded-xl px-3 py-2 outline-none"
           placeholder="Type a message..."
+            onKeyDown={(e)=>{
+            if(e.key==="Enter"){
+              if (inputText.trim() !== "" || selectedImage) {
+              sendMessages(selectedUser, inputText || "", selectedImage || null);
+              
+              setInputText("");
+            }
+            }
+          }}
         />
         <div></div>
         {/* Image Upload */}
@@ -90,6 +103,8 @@ useEffect(() => {
           ref={fileInputRef}
           onChange={handleImage}
           style={{ display: "none" }}
+
+
         />
 
         {/* Send Button */}
@@ -102,6 +117,7 @@ useEffect(() => {
               setInputText("");
             }
           }}
+        
           className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl text-white font-semibold"
         >
           Send

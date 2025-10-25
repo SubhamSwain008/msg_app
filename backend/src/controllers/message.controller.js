@@ -1,6 +1,7 @@
 import Message from '../models/Message.js'
 import User from '../models/User.js'
 import {v2 as cloudinary} from 'cloudinary'
+import { getReciverScoketId ,io} from '../utils/socket.io.utils.js';
 
 export const getAllPeople=async(req ,res)=>{
     try{
@@ -58,6 +59,11 @@ export const sendMessages=async(req,res)=>{
         image:imageUrl,
     });
     await newMessage.save();
+
+    const receiverSocketId=getReciverScoketId(receverId);
+    if(receiverSocketId){
+        io.to(receiverSocketId).emit("newMessage",newMessage)
+    }
 
     res.status(201).json({"message ":"message sent sucessfully",newMessage});
 }

@@ -20,6 +20,12 @@ const io = new Server(httpServer, {
 
 io.use(SocketAUthenticationMiddleware);
 
+
+//check user online or not
+export function getReciverScoketId(userId){
+
+  return userScoketMap[userId]
+};
 const userScoketMap = {};
 io.on("connection", (socket) => {
   const userId = socket.user?._id || socket.userId;

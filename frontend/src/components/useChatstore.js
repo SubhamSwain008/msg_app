@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
-
+import { useAuthStore } from "./useAuthStore.js";
+import { io } from "socket.io-client"
 export const useChatStore=create((set,get)=>({
 
 allContacts:[],
@@ -89,6 +90,20 @@ getMessages:async(id)=>{
     set({ isMessageGoingOn: false });
   }
 },
+listenToIncomingMessage:()=>{
+  const {selectedUser}=get();
+  if(!selectedUser) return;
+  const socket= useAuthStore.getState().scoket;
 
+  socket.on("newMessage",(newMessage)=>{
+    const currentMessages=get().messages;
+    set({messages:[...currentMessages,newMessage]});
+  })
+},
+stopListiningToMessage:()=>{
+  const socket= useAuthStore.getState().scoket;
+
+  socket.off("newMessage");
+}
     
 }));

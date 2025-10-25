@@ -16,9 +16,7 @@ export default function ChattingUsers() {
     setActiveTab,
   } = useChatStore();
 const {onlineUser}=useAuthStore();
-  useEffect(() => {
-    console.log("users:", allContacts, "chats:", chats);
-  }, [allContacts, chats]);
+
 
   const handleUserClick = async (userId) => {
     setSelectUser(userId);
@@ -47,7 +45,20 @@ const {onlineUser}=useAuthStore();
               }`}
               onClick={() => handleUserClick(val._id)}
             >
-              <img
+              <div
+            style={{
+              
+              borderRadius: "50%", // makes it circular, adjust as needed
+              // optional base border
+              boxShadow: onlineUser.includes(String(val._id))
+                ? "0 0 0px 3px #00ff50 " // green glow if online
+                : "0 0 0px 3px #A9A9A9", // no glow if offline
+              transition: "box-shadow 0.3s ease-in-out", // smooth glow transition
+            }}
+          >
+          
+
+                <img
                 src={val.profilePic || defalutpic}
                 alt=""
                 className="w-10 h-10 rounded-full object-cover border-2 border-white"
@@ -56,7 +67,11 @@ const {onlineUser}=useAuthStore();
                   e.target.src = defalutpic;
                 }}
               />
+              </div>
+              
+
               <span className="font-medium truncate">{val.fullname}</span>
+             
             </div>
           ))}
         </div>
@@ -65,13 +80,8 @@ const {onlineUser}=useAuthStore();
       {/* Chat Box */}
       <div className="flex-1 bg-gray-900 text-white p-4 overflow-y-auto flex flex-col">
         {selectedUser ? (
-          isMessageLoading ? (
-            <div className="text-gray-400 text-center mt-10">
-            
-            </div>
-          ) : (
             <ChatBox chatarray={messages} />
-          )
+          
         ) : (
           <div className="text-gray-400 text-center mt-10">
             Select a user to start chatting
