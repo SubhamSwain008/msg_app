@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use('/api/auth',authRoute);
 app.use('/api/msg',msgRoute);
 
-app.get('/api/home',arcProtection,(req,res)=>{
+app.get('/api/home',(req,res)=>{
     res.json({hello:"world"});
 });
 
