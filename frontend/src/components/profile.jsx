@@ -23,7 +23,7 @@ export default function MyProfile() {
 
     try {
       const res = await axios.put(
-        "https://msg-app-subhamswain008s-projects.vercel.app/api/auth/update-profile",
+        "https://msg-app-frontend-ten.vercel.app/api/auth/update-profile",
         formData,
         {
           withCredentials: true,
